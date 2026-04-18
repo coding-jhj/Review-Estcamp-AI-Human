@@ -29,17 +29,28 @@
 
 ## 🗺️ 학습 로드맵
 
-```
-🐍 Python 기초
-    └─▶ 🔢 NumPy (기초 → 심화 → 고급)
-              └─▶ 📐 통계 기초 & 선형대수
-                        └─▶ 📊 데이터 사이언스 (Pandas · 시각화)
-                                  └─▶ 🤖 머신러닝 (분류 · 회귀 · 불균형 데이터)
-                                            └─▶ 🧠 딥러닝 기초 (Keras · TensorFlow)
-                                                      └─▶ 👁 CNN
-                                                                └─▶ 💬 NLP 기초
-                                                                          └─▶ 🔁 Attention & 듀얼인코더
-                                                                                    └─▶ ⚡ Transformer & BERT
+```mermaid
+flowchart LR
+    A[Python 기초] --> B[NumPy\n기초·심화·고급]
+    B --> C[통계 기초\n& 선형대수]
+    C --> D[데이터 사이언스\nPandas · 시각화]
+    D --> E[머신러닝\n분류 · 회귀 · 불균형]
+    E --> F[딥러닝 기초\nKeras · TensorFlow]
+    F --> G[CNN]
+    G --> H[NLP 기초]
+    H --> I[Attention\n& 듀얼인코더]
+    I --> J[Transformer\n& BERT]
+
+    style A fill:#6366f1,color:#fff,stroke:none
+    style B fill:#7c3aed,color:#fff,stroke:none
+    style C fill:#7c3aed,color:#fff,stroke:none
+    style D fill:#2563eb,color:#fff,stroke:none
+    style E fill:#059669,color:#fff,stroke:none
+    style F fill:#059669,color:#fff,stroke:none
+    style G fill:#d97706,color:#fff,stroke:none
+    style H fill:#dc2626,color:#fff,stroke:none
+    style I fill:#dc2626,color:#fff,stroke:none
+    style J fill:#be185d,color:#fff,stroke:none
 ```
 
 <br/>
