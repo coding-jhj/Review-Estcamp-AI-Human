@@ -16,6 +16,9 @@
 
 <br/>
 
+[![교재 바로보기](https://img.shields.io/badge/📖%20교재%20바로보기-6366f1?style=for-the-badge)](https://coding-jhj.github.io/Review-Estcamp-AI-Human/AI%20학습%20교재%20_%20coding-jhj%20완전판.html)
+[![브라우저에서 바로 열기](https://img.shields.io/badge/🌐%20브라우저에서%20바로%20열기-0ea5e9?style=for-the-badge)](https://coding-jhj.github.io/Review-Estcamp-AI-Human/AI%20학습%20교재%20_%20coding-jhj%20완전판.html)
+
 </div>
 
 ---
@@ -123,7 +126,7 @@ open AI_학습_교재___coding-jhj_완전판.html
 
 ```
 📦 repo
- ┣ 📄 AI_학습_교재___coding-jhj_완전판.html   ← 메인 교재 (인터랙티브)
+ ┣ 📄 AI 학습 교재 _ coding-jhj 완전판.html   ← 메인 교재 (인터랙티브)
  ┗ 📄 README.md
 ```
 
