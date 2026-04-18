@@ -30,27 +30,28 @@
 ## 🗺️ 학습 로드맵
 
 ```mermaid
-flowchart LR
-    A[Python 기초] --> B[NumPy\n기초·심화·고급]
-    B --> C[통계 기초\n& 선형대수]
-    C --> D[데이터 사이언스\nPandas · 시각화]
-    D --> E[머신러닝\n분류 · 회귀 · 불균형]
-    E --> F[딥러닝 기초\nKeras · TensorFlow]
-    F --> G[CNN]
-    G --> H[NLP 기초]
-    H --> I[Attention\n& 듀얼인코더]
-    I --> J[Transformer\n& BERT]
+flowchart TD
+    A["🐍 Python 기초"] --> B
+    B["🔢 NumPy\n기초 · 심화 · 고급"] --> C
+    C["📐 통계 기초 & 선형대수"] --> D
+    D["📊 데이터 사이언스\nPandas · 시각화"] --> E
+    E["🤖 머신러닝\n분류 · 회귀 · 불균형"] --> F
+    F["🧠 딥러닝 기초\nKeras · TensorFlow"] --> G
+    G["👁 CNN"] --> H
+    H["💬 NLP 기초"] --> I
+    I["🔁 Attention & 듀얼인코더"] --> J
+    J["⚡ Transformer & BERT"]
 
-    style A fill:#6366f1,color:#fff,stroke:none
-    style B fill:#7c3aed,color:#fff,stroke:none
-    style C fill:#7c3aed,color:#fff,stroke:none
-    style D fill:#2563eb,color:#fff,stroke:none
-    style E fill:#059669,color:#fff,stroke:none
-    style F fill:#059669,color:#fff,stroke:none
-    style G fill:#d97706,color:#fff,stroke:none
-    style H fill:#dc2626,color:#fff,stroke:none
-    style I fill:#dc2626,color:#fff,stroke:none
-    style J fill:#be185d,color:#fff,stroke:none
+    style A fill:#6366f1,color:#fff,stroke:none,rx:8
+    style B fill:#7c3aed,color:#fff,stroke:none,rx:8
+    style C fill:#7c3aed,color:#fff,stroke:none,rx:8
+    style D fill:#2563eb,color:#fff,stroke:none,rx:8
+    style E fill:#059669,color:#fff,stroke:none,rx:8
+    style F fill:#059669,color:#fff,stroke:none,rx:8
+    style G fill:#d97706,color:#fff,stroke:none,rx:8
+    style H fill:#dc2626,color:#fff,stroke:none,rx:8
+    style I fill:#dc2626,color:#fff,stroke:none,rx:8
+    style J fill:#be185d,color:#fff,stroke:none,rx:8
 ```
 
 <br/>
