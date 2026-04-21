@@ -80,6 +80,34 @@ tr:hover td{background:rgba(99,102,241,.04);}
 .step{counter-increment:step;padding:10px 12px 10px 48px;position:relative;margin-bottom:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;}
 .step::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;}
 
+/* ── BOOK EXPANSION BLOCKS ── */
+.book-section{margin:22px 0 30px;padding:18px 20px;background:#fff;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:8px;box-shadow:0 4px 14px rgba(15,23,42,.05);}
+.book-section h3{font-size:1.04rem;margin:0 0 10px;color:#1f2937;}
+.book-section p{font-size:.9rem;line-height:1.75;margin:8px 0;color:#334155;}
+.book-section ul{margin:8px 0 10px 20px;font-size:.88rem;line-height:1.75;color:#334155;}
+.book-section li{margin:3px 0;}
+.book-diagram{font-family:Consolas,Monaco,'Courier New',monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin:12px 0;white-space:pre;overflow:auto;font-size:.84rem;line-height:1.55;color:#334155;}
+.book-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0;}
+.book-flow span{display:flex;align-items:center;justify-content:center;min-height:54px;padding:9px;text-align:center;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(236,72,153,.08));border:1px solid rgba(99,102,241,.25);border-radius:8px;font-size:.82rem;font-weight:700;color:#3730a3;}
+.book-mini-table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:.84rem;box-shadow:none;}
+.book-mini-table th{background:#eef2ff;color:#3730a3;}
+.book-mini-table td,.book-mini-table th{border:1px solid #dbe3f0;padding:8px 10px;}
+.book-chart{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin:12px 0;}
+.bar-row{display:grid;grid-template-columns:110px 1fr 46px;align-items:center;gap:10px;margin:8px 0;font-size:.82rem;color:#334155;}
+.bar{height:14px;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--pink));}
+.bar.green{background:linear-gradient(90deg,#10b981,#22c55e);}
+.bar.orange{background:linear-gradient(90deg,#f59e0b,#f97316);}
+.mini-axis{height:120px;position:relative;border-left:2px solid #94a3b8;border-bottom:2px solid #94a3b8;margin:18px 8px 8px 26px;}
+.mini-axis .curve{position:absolute;height:3px;border-radius:999px;transform-origin:left center;}
+.curve.train{left:8px;bottom:76px;width:210px;background:#6366f1;transform:rotate(-14deg);}
+.curve.valid{left:8px;bottom:45px;width:185px;background:#ec4899;transform:rotate(12deg);}
+.mini-axis .label{position:absolute;font-size:.75rem;color:#475569;background:#f8fafc;padding:2px 5px;border-radius:4px;}
+.label.train-l{left:168px;bottom:94px;}
+.label.valid-l{left:145px;bottom:23px;}
+.matrix-viz{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:360px;margin:12px 0;}
+.matrix-viz span{display:block;text-align:center;padding:10px 0;border-radius:6px;background:#dbeafe;color:#1e3a8a;font-weight:800;font-size:.82rem;}
+.matrix-viz span.hot{background:#6366f1;color:#fff;}
+
 /* ── GRID / CARD ── */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;}
@@ -116,6 +144,7 @@ hr.divider{border:none;border-top:2px solid var(--border);margin:36px 0;}
   #sidebar.open{left:0;}
   #overlay.open{display:block;}
   #main{padding:72px 16px 40px;max-width:100%;}
+  .book-flow{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -435,6 +464,59 @@ pattern = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string
   <h1 class="page-title"><span>2장 · NumPy 기초</span></h1>
   <p class="subtitle">배열 생성, dtype, 기본 연산 — numpy_1.ipynb 전체 코드 <span class="badge badge-np">NumPy</span></p>
   <div class="note">NumPy 배열(ndarray)은 Python 리스트보다 수십 배 빠릅니다. 모든 딥러닝 프레임워크의 내부도 NumPy와 동일한 개념으로 동작합니다.</div>
+
+  <div class="book-section">
+    <h3>개념 지도: NumPy는 왜 필요한가?</h3>
+    <p>Python 리스트는 여러 종류의 값을 자유롭게 담을 수 있어 편리하지만, 대량의 숫자를 반복 계산할 때는 느립니다. NumPy 배열은 같은 자료형의 숫자를 연속된 메모리에 담고, 내부의 빠른 벡터 연산으로 한 번에 계산합니다.</p>
+    <div class="book-flow">
+      <span>Python list<br>유연하지만 반복 계산이 느림</span>
+      <span>ndarray<br>같은 dtype의 숫자 묶음</span>
+      <span>vectorized operation<br>반복문 없이 한 번에 계산</span>
+      <span>ML/DL 입력<br>모델이 읽는 숫자 행렬</span>
+    </div>
+    <div class="book-diagram">arr = [[1, 2, 3],
+       [4, 5, 6]]
+
+shape = (2, 3)
+
+axis=0: 위에서 아래로 접는다  -> [5, 7, 9]
+axis=1: 왼쪽에서 오른쪽 접는다 -> [6, 15]</div>
+    <div class="book-chart">
+      <strong>Broadcasting 규칙 시각화</strong>
+      <div class="book-diagram">A: (2, 3)
+B:    (3)
+--------------
+결과: (2, 3)  가능
+
+A: (2, 3)
+B:    (2)
+--------------
+오류: 마지막 차원 3과 2가 달라서 불가능</div>
+      <p>NumPy 공식 문서 기준으로 broadcasting은 오른쪽 끝 차원부터 비교합니다. 두 차원이 같거나 둘 중 하나가 1이면 맞춰질 수 있습니다.</p>
+    </div>
+    <pre><code class="language-python">import numpy as np
+
+arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+
+print("shape:", arr.shape)
+print("axis=0 합:", arr.sum(axis=0))
+print("axis=1 합:", arr.sum(axis=1))
+
+scores = np.array([[80, 90, 70],
+                   [60, 75, 85]])
+bonus = np.array([5, 0, 10])
+
+print(scores + bonus)  # bonus가 각 행에 자동으로 더해짐: broadcasting</code></pre>
+    <pre><code class="language-python"># broadcasting 성공/실패를 눈으로 확인하는 실험
+ok = np.zeros((2, 3)) + np.array([1, 2, 3])
+print(ok.shape)
+
+try:
+    bad = np.zeros((2, 3)) + np.array([1, 2])
+except ValueError as e:
+    print("broadcasting 실패:", e)</code></pre>
+  </div>
 
   <h2 class="ch-title" id="s2-0">2.1 성능 비교 — 왜 NumPy인가?</h2>
   <pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
@@ -823,6 +905,58 @@ arr[:<span class="hljs-number">2</span>] = [[-<span class="hljs-number">1.37</sp
 <!-- CH3 --><div class="chapter" id="ch3">
   <h1 class="page-title"><span>3장 · 통계 기초</span></h1>
   <p class="subtitle">통계기초.ipynb 전체 코드 — 친구 수 데이터로 배우는 기술통계 <span class="badge badge-np">Statistics</span></p>
+
+  <div class="book-section">
+    <h3>개념 지도: 통계는 데이터를 요약하는 언어</h3>
+    <p>통계는 많은 데이터를 한눈에 이해하기 위해 숫자로 요약하는 방법입니다. 대표값은 데이터의 중심을, 산포도는 데이터가 얼마나 흩어졌는지를, 상관계수는 두 값이 함께 움직이는 정도를 보여줍니다.</p>
+    <table class="book-mini-table">
+      <tr><th>질문</th><th>사용 개념</th><th>해석</th></tr>
+      <tr><td>보통 어느 정도인가?</td><td>평균, 중위수, 최빈값</td><td>데이터의 중심</td></tr>
+      <tr><td>얼마나 들쑥날쑥한가?</td><td>분산, 표준편차, IQR</td><td>데이터의 흩어짐</td></tr>
+      <tr><td>두 값이 같이 움직이나?</td><td>공분산, 상관계수</td><td>변수 사이의 관계</td></tr>
+    </table>
+    <div class="book-diagram">A = [49, 50, 51]  평균 50, 거의 안 흩어짐
+B = [10, 50, 90]  평균 50, 많이 흩어짐
+
+같은 평균이라도 분산과 표준편차를 같이 봐야 데이터의 성격이 보인다.</div>
+    <div class="book-chart">
+      <strong>같은 평균, 다른 산포도</strong>
+      <div class="bar-row"><span>A 표준편차</span><div class="bar green" style="width:18%"></div><span>낮음</span></div>
+      <div class="bar-row"><span>B 표준편차</span><div class="bar orange" style="width:92%"></div><span>높음</span></div>
+      <p>평균만 보면 두 데이터 모두 50처럼 보입니다. 하지만 표준편차를 보면 A는 안정적이고, B는 값이 크게 흔들리는 데이터라는 사실이 드러납니다.</p>
+    </div>
+    <pre><code class="language-python">import numpy as np
+
+data1 = np.array([49, 50, 51])
+data2 = np.array([10, 50, 90])
+
+for name, data in [("A", data1), ("B", data2)]:
+    print(name)
+    print("평균:", data.mean())
+    print("표준편차:", data.std())
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2, 4, 5, 8, 10])
+print("상관계수:", np.corrcoef(x, y)[0, 1])</code></pre>
+    <pre><code class="language-python"># 그래프로 평균과 산포도 비교하기
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(7, 3))
+plt.subplot(1, 2, 1)
+plt.title("A: 낮은 산포도")
+plt.scatter(range(len(data1)), data1)
+plt.axhline(data1.mean(), color="red", linestyle="--", label="mean")
+plt.ylim(0, 100)
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.title("B: 높은 산포도")
+plt.scatter(range(len(data2)), data2)
+plt.axhline(data2.mean(), color="red", linestyle="--", label="mean")
+plt.ylim(0, 100)
+plt.legend()
+plt.show()</code></pre>
+  </div>
 
   <h2 class="ch-title" id="s3-1">3.1 데이터 탐색 (Counter)</h2>
   <pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
@@ -1321,6 +1455,66 @@ plt.show()</code></pre>
 <!-- CH6 --><div class="chapter" id="ch6">
   <h1 class="page-title"><span>6장 · 머신러닝</span></h1>
   <p class="subtitle">titanic_clean_restart · Regression실습_Bike · 신용카드 사기검출 전체 코드 <span class="badge badge-ml">Machine Learning</span></p>
+
+  <div class="book-section">
+    <h3>개념 지도: 머신러닝은 데이터에서 규칙을 찾는 방법</h3>
+    <p>전통적인 프로그래밍은 사람이 규칙을 직접 작성합니다. 머신러닝은 입력 데이터와 정답을 함께 보여주고, 모델이 예측에 필요한 규칙을 스스로 찾아가게 합니다.</p>
+    <div class="book-flow">
+      <span>데이터 수집</span>
+      <span>훈련/테스트 분리</span>
+      <span>모델 학습</span>
+      <span>평가와 개선</span>
+    </div>
+    <div class="book-diagram">전체 데이터
+├─ train: 모델이 공부하는 문제집
+└─ test : 처음 보는 시험지
+
+test 데이터를 학습에 섞으면 시험지를 미리 보고 공부하는 것과 같아서
+평가 점수가 실제 실력보다 높게 나온다.</div>
+    <div class="book-chart">
+      <strong>혼동행렬 읽는 법</strong>
+      <div class="matrix-viz">
+        <span class="hot">TN<br>정상→정상</span><span>FP<br>정상→양성</span>
+        <span>FN<br>양성→정상</span><span class="hot">TP<br>양성→양성</span>
+      </div>
+      <p>정확도 하나만 보면 놓치는 것이 있습니다. 사기 탐지나 질병 진단처럼 양성 클래스가 적은 문제에서는 FP와 FN의 비용이 다르기 때문에 precision, recall, F1, ROC-AUC를 함께 봐야 합니다.</p>
+    </div>
+    <pre><code class="language-python">from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target,
+    test_size=0.2,
+    random_state=42,
+    stratify=data.target
+)
+
+model = Pipeline([
+    ("scaler", StandardScaler()),
+    ("clf", LogisticRegression(max_iter=1000))
+])
+
+model.fit(X_train, y_train)
+pred = model.predict(X_test)
+
+print("accuracy:", accuracy_score(y_test, pred))
+print(confusion_matrix(y_test, pred))</code></pre>
+    <pre><code class="language-python"># scikit-learn 방식으로 혼동행렬 그래프 그리기
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    pred,
+    display_labels=data.target_names,
+    cmap="Blues"
+)
+plt.title("Confusion Matrix")
+plt.show()</code></pre>
+  </div>
 
   
   <!-- ===== 새로 추가된 개념 섹션 (ML1~ML5 기반) ===== -->
@@ -1841,6 +2035,64 @@ plt.title(<span class="hljs-string">'PR Curve'</span>); plt.show()</code></pre>
   <h1 class="page-title"><span>7장 · 딥러닝 기초</span></h1>
   <p class="subtitle">퍼셉트론, Keras 신경망, TensorFlow 텐서 — building_blocks_of_NN / NB_tf_tensor <span class="badge badge-dl">Deep Learning</span></p>
 
+  <div class="book-section">
+    <h3>개념 지도: 딥러닝은 가중치를 조금씩 고쳐가는 학습</h3>
+    <p>신경망은 입력에 가중치를 곱하고 더한 뒤 활성화 함수를 통과시켜 예측을 만듭니다. 예측이 틀리면 손실 함수가 틀린 정도를 숫자로 계산하고, 옵티마이저가 손실을 줄이는 방향으로 가중치를 수정합니다.</p>
+    <div class="book-diagram">입력 x -> 가중치 W -> 합산 z -> 활성화 함수 -> 예측 y
+                                      ↓
+                                  손실 함수
+                                      ↓
+                              옵티마이저가 W 수정</div>
+    <div class="book-chart">
+      <strong>과적합을 그래프로 보면</strong>
+      <div class="mini-axis">
+        <div class="curve train"></div>
+        <div class="curve valid"></div>
+        <span class="label train-l">train loss 감소</span>
+        <span class="label valid-l">val loss 증가</span>
+      </div>
+      <p>TensorFlow 튜토리얼에서도 강조하듯, 훈련 성능은 계속 좋아지는데 검증 성능이 정체되거나 나빠지면 과적합 신호입니다. 이때는 데이터 확대, 모델 축소, 정규화, dropout, early stopping을 고려합니다.</p>
+    </div>
+    <table class="book-mini-table">
+      <tr><th>개념</th><th>역할</th></tr>
+      <tr><td>가중치</td><td>입력 특성을 얼마나 중요하게 볼지 정하는 값</td></tr>
+      <tr><td>손실 함수</td><td>예측이 정답에서 얼마나 벗어났는지 재는 점수</td></tr>
+      <tr><td>옵티마이저</td><td>손실을 줄이도록 가중치를 업데이트하는 방법</td></tr>
+      <tr><td>learning rate</td><td>한 번에 가중치를 얼마나 움직일지 정하는 보폭</td></tr>
+    </table>
+    <pre><code class="language-python">import numpy as np
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+x = np.array([1.0, 0.5])
+w = np.array([0.8, -0.4])
+b = 0.1
+
+z = np.dot(x, w) + b
+y = sigmoid(z)
+
+print("가중합 z:", z)
+print("예측 y:", y)</code></pre>
+    <pre><code class="language-python"># 학습 곡선으로 과적합 확인하기
+import matplotlib.pyplot as plt
+
+history = model.fit(
+    X_train, y_train,
+    validation_split=0.2,
+    epochs=30,
+    verbose=0
+)
+
+plt.plot(history.history["loss"], label="train loss")
+plt.plot(history.history["val_loss"], label="validation loss")
+plt.xlabel("epoch")
+plt.ylabel("loss")
+plt.legend()
+plt.title("Training vs Validation Loss")
+plt.show()</code></pre>
+  </div>
+
   <h2 class="ch-title" id="s7-1">7.1 퍼셉트론 &amp; 논리 게이트</h2>
   <pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 
@@ -2051,6 +2303,26 @@ history = model.fit(X_train, y_train, epochs=<span class="hljs-number">100</span
   <h1 class="page-title"><span>8장 · CNN &amp; 이미지 처리</span></h1>
   <p class="subtitle">Padding &amp; Stride 이론 + MNIST CNN + 전이학습 <span class="badge badge-dl">CNN</span></p>
 
+  <div class="book-section">
+    <h3>개념 지도: CNN은 작은 필터로 이미지를 훑으며 특징을 찾는다</h3>
+    <p>이미지는 픽셀 행렬입니다. CNN은 필터를 이미지 위에 올려놓고 조금씩 움직이며 엣지, 질감, 모양 같은 지역 패턴을 찾습니다. 앞쪽 층은 선과 모서리처럼 단순한 특징을, 뒤쪽 층은 눈·바퀴·글자 획처럼 더 복잡한 특징을 학습합니다.</p>
+    <div class="book-diagram">입력 이미지       3x3 필터        특징맵
+┌──────────┐    ┌───────┐      ┌───────┐
+│ 픽셀 행렬 │ -> │ 가중치 │  ->  │ 반응값 │
+└──────────┘    └───────┘      └───────┘
+
+padding: 가장자리 정보가 사라지지 않게 테두리를 채움
+stride : 필터가 몇 칸씩 이동하는지 결정
+pooling: 중요한 반응만 남기고 크기를 줄임</div>
+    <pre><code class="language-python"># 합성곱 결과 크기 계산
+def conv_output_size(input_size, kernel_size, padding=0, stride=1):
+    return (input_size + 2 * padding - kernel_size) // stride + 1
+
+print(conv_output_size(28, 3, padding=0, stride=1))  # 26
+print(conv_output_size(28, 3, padding=1, stride=1))  # 28
+print(conv_output_size(28, 3, padding=1, stride=2))  # 14</code></pre>
+  </div>
+
   <h2 class="ch-title" id="s8-1">8.1 Padding &amp; Stride — tf.nn.conv2d</h2>
   <pre><code class="language-python hljs" data-highlighted="yes"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf
 <span class="hljs-keyword">from</span> tensorflow <span class="hljs-keyword">import</span> keras
@@ -2174,6 +2446,54 @@ model.<span class="hljs-built_in">compile</span>(optimizer=keras.optimizers.Adam
 <!-- CH9 --><div class="chapter" id="ch9">
   <h1 class="page-title"><span>9장 · NLP 기초</span></h1>
   <p class="subtitle">텍스트 전처리 · Word2Vec · fastText · 한국어 리뷰 분석 실습 <span class="badge badge-nlp">NLP</span></p>
+
+  <div class="book-section">
+    <h3>로컬 음성 자료 연결: STT · LLM · TTS · 오디오 분류</h3>
+    <p><code>C:\voice</code> 폴더에는 음성 제어 어시스턴트, Gemini 감정 음성 변환, Freesound AutoTagging 실습 자료가 있습니다. 이 자료들은 NLP가 텍스트만 다루는 것이 아니라, 음성을 텍스트로 바꾸고(STT), 언어 모델로 해석하고(LLM), 다시 음성으로 말하게 하는(TTS) 전체 파이프라인으로 확장된다는 점을 보여줍니다.</p>
+    <div class="book-flow">
+      <span>Audio<br>wav/mp3/m4a</span>
+      <span>STT<br>음성 → 텍스트</span>
+      <span>LLM<br>의도 해석/응답 생성</span>
+      <span>TTS<br>텍스트 → 음성</span>
+    </div>
+    <table class="book-mini-table">
+      <tr><th>로컬 자료</th><th>교재에 연결할 개념</th></tr>
+      <tr><td>voice_control_assistant.ipynb</td><td>Whisper STT, 명령 파싱, 데스크톱 제어</td></tr>
+      <tr><td>04_전체연결_수정.ipynb</td><td>STT → LLM → TTS 전체 연결</td></tr>
+      <tr><td>05_감정_음성_변환_gemini.ipynb</td><td>감정별 TTS, 페르소나, 음성 표현</td></tr>
+      <tr><td>Freesound AutoTagging</td><td>멜 스펙트로그램, 다중 라벨 오디오 분류</td></tr>
+    </table>
+    <div class="book-diagram">파형 waveform: 시간에 따른 공기 진동
+스펙트로그램 spectrogram: 시간-주파수-에너지 지도
+멜 스펙트로그램 mel spectrogram: 사람이 듣는 방식에 가깝게 주파수 축을 변환한 표현</div>
+    <pre><code class="language-python"># 로컬 음성 파일의 파형과 스펙트로그램 그리기
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+
+audio_path = r"C:\voice\gemini_cute.wav"
+y, sr = librosa.load(audio_path, sr=16000)
+
+plt.figure(figsize=(10, 3))
+librosa.display.waveshow(y, sr=sr)
+plt.title("Waveform")
+plt.show()
+
+mel = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=64)
+mel_db = librosa.power_to_db(mel, ref=max)
+
+plt.figure(figsize=(10, 4))
+librosa.display.specshow(mel_db, sr=sr, x_axis="time", y_axis="mel", cmap="magma")
+plt.colorbar(format="%+2.0f dB")
+plt.title("Mel Spectrogram")
+plt.show()</code></pre>
+    <pre><code class="language-python"># 음성 제어 어시스턴트의 핵심 흐름
+def voice_command_once(audio_file):
+    text = transcribe(audio_file)       # STT: 음성 -> 텍스트
+    command = parse_command(text)       # NLP: 텍스트 -> 의도/action
+    result = execute(command)           # Action: 실제 동작 실행
+    return text, command, result</code></pre>
+  </div>
 
   <h2 class="ch-title" id="s9-1">9.1 텍스트 전처리 파이프라인</h2>
   <div class="steps">
@@ -2363,6 +2683,60 @@ plt.show()
 <!-- CH10 --><div class="chapter" id="ch10">
   <h1 class="page-title"><span>10장 · Attention &amp; 듀얼 인코더</span></h1>
   <p class="subtitle">Attention_mechanism.ipynb · [실습3] 듀얼 인코더 전체 코드 <span class="badge badge-nlp">Attention</span></p>
+
+  <div class="book-section">
+    <h3>개념 지도: Attention은 무엇을 중요하게 볼지 정하는 장치</h3>
+    <p>Attention은 현재 토큰이 문장 안의 다른 토큰들을 얼마나 참고해야 하는지 계산합니다. Query는 지금 찾고 싶은 것, Key는 각 토큰의 검색용 표식, Value는 실제로 가져올 정보라고 생각하면 쉽습니다.</p>
+    <div class="book-diagram">Query: 지금 내가 찾고 싶은 정보
+Key  : 각 단어가 가진 검색용 태그
+Value: 관련도가 높을 때 가져올 실제 내용
+
+1. Query와 Key를 비교해 관련도 점수를 만든다.
+2. softmax로 점수를 확률처럼 바꾼다.
+3. 그 비율만큼 Value를 섞어 문맥 벡터를 만든다.</div>
+    <div class="book-chart">
+      <strong>Attention weight heatmap 예시</strong>
+      <div class="matrix-viz">
+        <span class="hot">0.70</span><span>0.20</span><span>0.07</span><span>0.03</span>
+        <span>0.10</span><span class="hot">0.62</span><span>0.20</span><span>0.08</span>
+        <span>0.05</span><span>0.15</span><span class="hot">0.65</span><span>0.15</span>
+        <span>0.08</span><span>0.12</span><span>0.25</span><span class="hot">0.55</span>
+      </div>
+      <p>진한 칸은 현재 토큰이 더 많이 참고하는 토큰입니다. Attention은 단어 순서 전체를 한 번에 비교하므로 RNN보다 병렬화하기 좋고, Transformer의 핵심 기반이 됩니다.</p>
+    </div>
+    <pre><code class="language-python">import numpy as np
+
+def softmax(x, axis=-1):
+    x = x - x.max(axis=axis, keepdims=True)
+    exp = np.exp(x)
+    return exp / exp.sum(axis=axis, keepdims=True)
+
+Q = np.array([[1.0, 0.0]])
+K = np.array([[1.0, 0.0],
+              [0.5, 0.5],
+              [0.0, 1.0]])
+V = np.array([[10.0, 0.0],
+              [5.0, 5.0],
+              [0.0, 10.0]])
+
+scores = Q @ K.T / np.sqrt(Q.shape[-1])
+weights = softmax(scores)
+context = weights @ V
+
+print("attention score:", scores)
+print("attention weight:", weights)
+print("context vector:", context)</code></pre>
+    <pre><code class="language-python"># Attention weight를 heatmap으로 시각화
+import matplotlib.pyplot as plt
+
+tokens = ["나는", "사과를", "먹었다", "그것은"]
+plt.imshow(weights, cmap="Blues")
+plt.xticks(range(len(K)), tokens[:len(K)])
+plt.yticks(range(len(Q)), ["Query"])
+plt.colorbar()
+plt.title("Attention Weights")
+plt.show()</code></pre>
+  </div>
 
   <h2 class="ch-title" id="s10-1">10.1 Scaled Dot-Product Attention</h2>
   <div class="formula">Attention(Q, K, V) = softmax(QKᵀ / √d_k) × V</div>
@@ -2571,6 +2945,45 @@ plt.suptitle(<span class="hljs-string">"Top 5 for query: 'Dress'"</span>); plt.s
 <!-- CH11 --><div class="chapter" id="ch11">
   <h1 class="page-title"><span>11장 · Transformer &amp; BERT</span></h1>
   <p class="subtitle">Self-Attention, Transformer 인코더, BERT, Vector DB &amp; RAG <span class="badge badge-nlp">Transformer</span></p>
+
+  <div class="book-section">
+    <h3>개념 지도: Transformer에서 RAG까지</h3>
+    <p>Transformer는 Attention을 중심으로 문장 전체의 관계를 한 번에 계산합니다. BERT는 양방향 문맥을 보며 사전학습한 Transformer 계열 모델이고, RAG는 외부 문서를 검색해 LLM 답변에 근거를 넣는 구조입니다.</p>
+    <div class="book-flow">
+      <span>Token<br>문장을 작은 단위로 분해</span>
+      <span>Embedding<br>토큰을 숫자 벡터로 변환</span>
+      <span>Self-Attention<br>토큰끼리 관계 계산</span>
+      <span>Context Vector<br>문맥이 반영된 표현</span>
+    </div>
+    <div class="book-diagram">RAG 흐름
+
+사용자 질문
+  -> 질문 임베딩
+  -> Vector DB에서 관련 문서 검색
+  -> 검색된 문서를 프롬프트에 추가
+  -> LLM이 근거를 바탕으로 답변 생성</div>
+    <pre><code class="language-python"># SentenceTransformer를 이용한 아주 작은 의미 검색 예시
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+docs = [
+    "NumPy는 배열 연산을 빠르게 처리한다.",
+    "BERT는 양방향 문맥을 학습한 언어 모델이다.",
+    "RAG는 검색 결과를 생성 모델에 함께 넣는 방식이다.",
+]
+
+query = "외부 문서를 찾아서 답변하는 방법은?"
+model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+
+doc_vecs = model.encode(docs, normalize_embeddings=True)
+query_vec = model.encode([query], normalize_embeddings=True)
+
+scores = query_vec @ doc_vecs.T
+best = int(np.argmax(scores))
+
+print("가장 관련 있는 문서:", docs[best])
+print("유사도:", scores[0, best])</code></pre>
+  </div>
 
   <h2 class="ch-title" id="s11-1">11.1 Transformer 구조 개요</h2>
   <div class="grid2">
