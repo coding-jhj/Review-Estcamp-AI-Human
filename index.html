@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI 학습 교재 — 완전판 | coding-jhj</title>
+<meta name="description" content="이스트캠프 AI Human Camp 학습 내용을 Python 기초부터 Transformer·BERT까지 직접 정리한 인터랙티브 HTML 교재." />
+<meta property="og:title" content="AI 학습 교재 — 완전판" />
+<meta property="og:description" content="Python 기초부터 Transformer·BERT까지 — 11개 챕터 인터랙티브 복습 교재" />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<style>
+  :root{
+    --bg:#f0f4ff; --surface:#ffffff; --surface2:#f8faff;
+    --border:#e2e8f0; --text:#1e293b; --muted:#475569;
+    --primary:#6366f1; --secondary:#8b5cf6; --pink:#ec4899;
+    --sky:#0ea5e9; --green:#10b981; --yellow:#f59e0b; --orange:#f97316; --red:#ef4444;
+    --shadow:0 18px 48px rgba(99,102,241,.12);
+    --shadow-sm:0 4px 14px rgba(99,102,241,.10);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 12% -5%, rgba(99,102,241,.14), transparent 38rem),
+      radial-gradient(circle at 95% 0%, rgba(236,72,153,.10), transparent 32rem),
+      var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI','Noto Sans KR',sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--primary);text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* ===== Hero ===== */
+  header.hero{
+    text-align:center;
+    padding:96px 24px 72px;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--primary);
+    background:rgba(99,102,241,.10);
+    border:1px solid rgba(99,102,241,.22);
+    padding:6px 14px;border-radius:999px;margin-bottom:24px;
+  }
+  h1.title{
+    font-size:clamp(2.2rem,5.2vw,3.6rem);
+    font-weight:800;line-height:1.15;margin:0 0 16px;letter-spacing:-.02em;
+  }
+  h1.title span{
+    background:linear-gradient(90deg,var(--sky),var(--primary) 45%,var(--pink));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .lead{
+    font-size:clamp(1rem,2.4vw,1.2rem);color:var(--muted);
+    max-width:640px;margin:0 auto 36px;
+  }
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:14px 28px;border-radius:12px;font-weight:700;font-size:.98rem;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    border:1px solid transparent;
+  }
+  .btn:focus-visible{outline:3px solid rgba(99,102,241,.45);outline-offset:2px;}
+  .btn-primary{
+    color:#fff;background:linear-gradient(135deg,var(--primary),var(--secondary));
+    box-shadow:var(--shadow-sm);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(99,102,241,.30);}
+  .btn-ghost{
+    color:var(--primary);background:var(--surface);border-color:var(--border);
+  }
+  .btn-ghost:hover{transform:translateY(-2px);border-color:var(--primary);box-shadow:var(--shadow-sm);}
+
+  .stats{
+    display:flex;gap:36px;justify-content:center;flex-wrap:wrap;
+    margin-top:56px;
+  }
+  .stat .num{font-size:1.9rem;font-weight:800;
+    background:linear-gradient(90deg,var(--primary),var(--pink));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .stat .lbl{font-size:.82rem;color:var(--muted);font-weight:600;}
+
+  /* ===== Section ===== */
+  section{padding:54px 0;}
+  .sec-head{text-align:center;margin-bottom:40px;}
+  .sec-head h2{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;margin:0 0 8px;letter-spacing:-.01em;}
+  .sec-head p{color:var(--muted);margin:0;font-size:.98rem;}
+
+  /* curriculum cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:22px 22px 20px;box-shadow:var(--shadow-sm);
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    position:relative;overflow:hidden;
+  }
+  .card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;
+    background:linear-gradient(90deg,var(--c1,var(--primary)),var(--c2,var(--secondary)));}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:rgba(99,102,241,.35);}
+  .card .pill{font-size:.72rem;font-weight:800;letter-spacing:.06em;color:var(--c1,var(--primary));
+    text-transform:uppercase;}
+  .card h3{font-size:1.12rem;font-weight:800;margin:6px 0 8px;}
+  .card p{font-size:.88rem;color:var(--muted);margin:0;line-height:1.65;}
+
+  /* feature list */
+  .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+  .feat{
+    background:linear-gradient(135deg,rgba(99,102,241,.05),rgba(236,72,153,.03));
+    border:1px solid rgba(99,102,241,.16);border-radius:14px;padding:20px;
+  }
+  .feat .ico{font-size:1.4rem;}
+  .feat h4{margin:8px 0 6px;font-size:1rem;font-weight:800;}
+  .feat p{margin:0;font-size:.86rem;color:var(--muted);}
+
+  /* stack */
+  .stack-wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+  .tag{
+    font-size:.83rem;font-weight:700;padding:8px 16px;border-radius:999px;
+    background:var(--surface);border:1px solid var(--border);color:var(--text);
+    box-shadow:var(--shadow-sm);
+  }
+
+  /* big CTA band */
+  .band{
+    background:linear-gradient(135deg,var(--primary),var(--secondary) 55%,var(--pink));
+    border-radius:24px;padding:56px 32px;text-align:center;color:#fff;
+    box-shadow:var(--shadow);margin:20px 0;
+  }
+  .band h2{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;margin:0 0 12px;}
+  .band p{margin:0 0 28px;opacity:.92;font-size:1.02rem;}
+  .band .btn-primary{background:#fff;color:var(--primary);}
+  .band .btn-primary:hover{box-shadow:0 12px 28px rgba(0,0,0,.22);}
+
+  footer{text-align:center;padding:48px 24px 64px;color:var(--muted);font-size:.86rem;}
+  footer a{font-weight:700;}
+
+  @media (max-width:560px){
+    header.hero{padding:64px 20px 48px;}
+    .stats{gap:24px;}
+    .band{padding:40px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">이스트캠프 AI Human Camp · 4기</span>
+    <h1 class="title">AI 학습 교재 <span>완전판</span></h1>
+    <p class="lead">Python 기초부터 Transformer·BERT까지 — 부트캠프 전 과정을 직접 정리한
+      <strong>인터랙티브 HTML 복습 교재</strong>입니다. 코드 예제·수식·다이어그램을 한 곳에서.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="AI%20%ED%95%99%EC%8A%B5%20%EA%B5%90%EC%9E%AC%20_%20coding-jhj%20%EC%99%84%EC%A0%84%ED%8C%90.html">📖 교재 바로보기</a>
+      <a class="btn btn-ghost" href="https://github.com/coding-jhj/Review-Estcamp-AI-Human">GitHub 저장소</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">11</div><div class="lbl">챕터</div></div>
+      <div class="stat"><div class="num">7</div><div class="lbl">학습 파트</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">직접 작성</div></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>학습 커리큘럼</h2>
+      <p>7개 파트, 기초 수학에서 최신 NLP 아키텍처까지 단계적으로</p>
+    </div>
+    <div class="grid">
+      <div class="card" style="--c1:#6366f1;--c2:#8b5cf6">
+        <div class="pill">Part 1</div><h3>🐍 Python 기초</h3>
+        <p>변수·자료형·조건문·반복문·함수·클래스·예외처리·정규표현식</p>
+      </div>
+      <div class="card" style="--c1:#8b5cf6;--c2:#a855f7">
+        <div class="pill">Part 2</div><h3>🔢 NumPy</h3>
+        <p>배열 생성·dtype·인덱싱·슬라이싱·브로드캐스팅·고급 연산</p>
+      </div>
+      <div class="card" style="--c1:#2563eb;--c2:#0ea5e9">
+        <div class="pill">Part 3</div><h3>📐 통계 &amp; 선형대수</h3>
+        <p>중심경향·산포도·공분산·상관계수·벡터/행렬 연산·선형회귀</p>
+      </div>
+      <div class="card" style="--c1:#059669;--c2:#10b981">
+        <div class="pill">Part 4</div><h3>📊 데이터 사이언스</h3>
+        <p>Pandas·결측치 처리·특성 공학·Matplotlib/Seaborn 시각화</p>
+      </div>
+      <div class="card" style="--c1:#0d9488;--c2:#059669">
+        <div class="pill">Part 5</div><h3>🤖 머신러닝</h3>
+        <p>타이타닉 분류·자전거 수요 예측·신용카드 사기 탐지·모델 평가</p>
+      </div>
+      <div class="card" style="--c1:#d97706;--c2:#f59e0b">
+        <div class="pill">Part 6</div><h3>🧠 딥러닝</h3>
+        <p>퍼셉트론·Keras 신경망·TensorFlow·Optimizer/Loss·CNN·전이학습</p>
+      </div>
+      <div class="card" style="--c1:#dc2626;--c2:#ec4899">
+        <div class="pill">Part 7</div><h3>⚡ NLP</h3>
+        <p>텍스트 전처리·Word2Vec·Attention·Transformer·BERT·Vector DB &amp; RAG</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>교재의 특징</h2>
+      <p>단순 노트가 아닌, 직접 만든 학습용 웹 도큐먼트</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat"><div class="ico">🧭</div><h4>인터랙티브 사이드바</h4>
+        <p>챕터·섹션 단위로 즉시 이동. 긴 문서를 빠르게 탐색.</p></div>
+      <div class="feat"><div class="ico">💻</div><h4>코드 하이라이팅</h4>
+        <p>highlight.js 기반 Python 코드 블록 — 실제 작성한 노트북 코드 포함.</p></div>
+      <div class="feat"><div class="ico">📝</div><h4>시각적 노트 유형</h4>
+        <p>💡 개념 · ⚠️ 주의 · ✅ 핵심 팁을 색상으로 구분.</p></div>
+      <div class="feat"><div class="ico">📊</div><h4>표 · 수식 · 다이어그램</h4>
+        <p>비교표와 수학 공식, Mermaid 학습 로드맵으로 개념 정리.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>사용 기술 스택</h2>
+      <p>교재에서 다루는 전체 도구</p>
+    </div>
+    <div class="stack-wrap">
+      <span class="tag">Python 3.x</span>
+      <span class="tag">NumPy</span>
+      <span class="tag">Pandas</span>
+      <span class="tag">Matplotlib</span>
+      <span class="tag">Seaborn</span>
+      <span class="tag">scikit-learn</span>
+      <span class="tag">TensorFlow / Keras</span>
+      <span class="tag">Word2Vec · fastText</span>
+      <span class="tag">BERT · Hugging Face</span>
+      <span class="tag">HTML5 · highlight.js</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="band">
+      <h2>지금 바로 교재를 열어보세요</h2>
+      <p>설치·서버 불필요. 브라우저에서 11개 챕터를 자유롭게 탐색할 수 있습니다.</p>
+      <a class="btn btn-primary" href="AI%20%ED%95%99%EC%8A%B5%20%EA%B5%90%EC%9E%AC%20_%20coding-jhj%20%EC%99%84%EC%A0%84%ED%8C%90.html">📖 교재 바로보기</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    📌 이스트캠프 AI Human Camp 4기 · 학습 정리 by
+    <a href="https://github.com/coding-jhj">coding-jhj</a>
+  </div>
+</footer>
+
+</body>
+</html>
