@@ -97,7 +97,7 @@ flowchart TD
 git clone https://github.com/coding-jhj/Review-Estcamp-AI-Human.git
 
 # 2. HTML 파일 브라우저로 열기
-open AI_학습_교재___coding-jhj_완전판.html
+open "AI 학습 교재 _ coding-jhj 완전판.html"
 ```
 
 > 별도 서버 불필요 — 로컬에서 HTML 파일을 직접 열면 됩니다.
